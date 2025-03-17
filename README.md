@@ -197,149 +197,17 @@ The core data model includes:
 - **Users**: User profiles and authentication information
 - **Progress**: Tracking user advancement through problems
 
-## Development Workflow
+## Development Progress
 
-1. Start with the minimal viable product (MVP)
-2. Implement basic problem presentation
-3. Add user authentication
-4. Develop the guided walkthrough functionality
-5. Implement progress tracking
-6. Enhance with additional features
+For detailed information about the project's development status, completed tasks, and upcoming work, please see [Development Progress](docs/development_progress.md).
 
-## Development Roadmap and Challenges
+## Contributing
 
-### Phase 1: Foundation Setup
-1. **Basic Infrastructure**
-   - Set up project structure and Docker configuration
-   - Implement CI/CD pipelines
-   - **Potential Challenges**:
-     - Ensuring consistent development environments across team members
-     - Managing different environment configurations (dev, staging, prod)
-     - Coordinating frontend and backend development workflows
-
-2. **Authentication System**
-   - Implement user registration and login
-   - Set up JWT token management
-   - Configure role-based access control
-   - **Potential Challenges**:
-     - Securing user data and handling passwords properly
-     - Managing token expiration and refresh flows
-     - Implementing proper session management
-
-### Phase 2: Core Features
-1. **Problem Management System**
-   - Design problem data structure (supporting multiple subjects)
-   - Implement problem creation and management interfaces
-   - Create the step-by-step solution framework
-   - **Potential Challenges**:
-     - Designing a flexible schema that works for different subjects
-     - Handling complex mathematical notation and diagrams
-     - Managing problem difficulty progression
-
-2. **Interactive Learning Interface**
-   - Develop the guided solution viewer
-   - Implement the hint system
-   - Create the problem-solving interface
-   - **Potential Challenges**:
-     - Creating an intuitive UI for complex problem steps
-     - Balancing hint helpfulness without giving away solutions
-     - Managing state for multi-step problems
-     - Handling real-time validation of user inputs
-
-### Phase 3: Progress Tracking
-1. **User Progress System**
-   - Implement progress tracking database schema
-   - Create progress visualization components
-   - Design the achievement system
-   - **Potential Challenges**:
-     - Efficiently storing and querying large amounts of progress data
-     - Creating meaningful progress metrics
-     - Handling concurrent progress updates
-
-2. **Analytics and Reporting**
-   - Implement learning analytics
-   - Create progress reports for users
-   - Design teacher/admin dashboards
-   - **Potential Challenges**:
-     - Processing large amounts of user data efficiently
-     - Creating meaningful insights from raw progress data
-     - Maintaining performance with complex queries
-
-### Phase 4: Scaling and Optimization
-1. **Performance Optimization**
-   - Implement caching strategies
-   - Optimize database queries
-   - Add load balancing
-   - **Potential Challenges**:
-     - Managing cache invalidation
-     - Handling increased server load
-     - Maintaining low latency for interactive features
-
-2. **Content Management**
-   - Create content management system for problems
-   - Implement content versioning
-   - Add support for multiple languages
-   - **Potential Challenges**:
-     - Managing content updates without disrupting users
-     - Handling different types of content (text, images, interactive elements)
-     - Maintaining content quality across subjects
-
-### Common Pitfalls to Avoid
-
-1. **Technical Pitfalls**
-   - Over-engineering early in development
-   - Not planning for scale from the start
-   - Insufficient error handling and logging
-   - Not implementing proper automated testing
-   - Tight coupling between frontend and backend
-
-2. **User Experience Pitfalls**
-   - Complex UI that overwhelms users
-   - Insufficient feedback on user actions
-   - Inconsistent navigation patterns
-   - Poor mobile responsiveness
-   - Not considering accessibility requirements
-
-3. **Data Management Pitfalls**
-   - Inefficient database schema design
-   - Not implementing proper backup strategies
-   - Poor handling of concurrent updates
-   - Not planning for data migration
-   - Insufficient data validation
-
-4. **Security Considerations**
-   - Not sanitizing user inputs
-   - Exposing sensitive data in APIs
-   - Weak password policies
-   - Not implementing rate limiting
-   - Insufficient audit logging
-
-### Risk Mitigation Strategies
-
-1. **Technical Risks**
-   - Start with a minimum viable product (MVP)
-   - Implement comprehensive automated testing
-   - Use feature flags for gradual rollouts
-   - Regular security audits and updates
-   - Maintain detailed technical documentation
-
-2. **User Experience**
-   - Regular user testing and feedback collection
-   - A/B testing for major features
-   - Progressive enhancement approach
-   - Regular accessibility audits
-   - Clear error messages and user guidance
-
-3. **Data Management**
-   - Regular database backups
-   - Implement database migrations strategy
-   - Monitor database performance
-   - Regular data integrity checks
-   - Clear data retention policies
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 

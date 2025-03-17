@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.core.security import verify_token
+from app.core.config import settings
 from app.services.auth_service import (
     create_user,
     authenticate_user,
