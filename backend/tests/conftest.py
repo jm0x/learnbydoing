@@ -49,16 +49,33 @@ def client(db_session):
         yield test_client
     app.dependency_overrides.clear()
 
+# Generate a unique ID for this test run to avoid username/email conflicts
+pytest.test_run_id = os.urandom(4).hex()
+
 @pytest.fixture(scope="function")
 def test_user(client):
     """Create a test user."""
     user_data = {
-        "email": "testuser@example.com",
-        "username": "testuser",
+        "email": f"testuser{pytest.test_run_id}@example.com",
+        "username": f"testuser{pytest.test_run_id}",
         "password": "testpassword123"
     }
+    
+    # Try to create the user
     response = client.post("/api/v1/auth/register", json=user_data)
-    assert response.status_code == 201
+    
+    # If user already exists (400 Bad Request), try with a different username/email
+    if response.status_code == 400:
+        user_data = {
+            "email": f"testuser{pytest.test_run_id}2@example.com",
+            "username": f"testuser{pytest.test_run_id}2",
+            "password": "testpassword123"
+        }
+        response = client.post("/api/v1/auth/register", json=user_data)
+        assert response.status_code == 201, f"Failed to create test user: {response.json()}"
+    else:
+        assert response.status_code == 201, f"Failed to create test user: {response.json()}"
+    
     return user_data
 
 @pytest.fixture(scope="function")

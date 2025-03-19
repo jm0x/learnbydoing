@@ -81,7 +81,7 @@ class TestAuthAPI:
         assert response.status_code == 401
         assert "Incorrect username or password" in response.json()["detail"]
 
-    def test_get_current_user(self, client, test_user_token):
+    def test_get_current_user(self, client, test_user_token, test_user):
         """Test getting current user information."""
         # Test with valid token
         response = client.get(
@@ -90,8 +90,8 @@ class TestAuthAPI:
         )
         assert response.status_code == 200
         data = response.json()
-        assert data["username"] == "testuser"
-        assert data["email"] == "testuser@example.com"
+        assert data["username"] == test_user["username"]
+        assert data["email"] == test_user["email"]
         assert "id" in data
         assert "is_active" in data
         assert "hashed_password" not in data

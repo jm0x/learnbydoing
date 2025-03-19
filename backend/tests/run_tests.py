@@ -10,6 +10,9 @@ import pytest
 import time
 from datetime import datetime
 
+# Add the backend directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 def run_tests():
     """Run all backend tests and display results."""
     print("\n" + "=" * 80)
@@ -59,16 +62,28 @@ def run_tests():
                 test_count = content.count("def test_")
                 total_passed += test_count
         else:
-            # Some tests failed, count them approximately
-            failed_count = result // 256 if result > 0 else 1
+            # Some tests failed
+            # Parse the output to get a more accurate count of failures
             with open(test_path, "r") as f:
                 content = f.read()
                 test_count = content.count("def test_")
             
-            passed_count = test_count - failed_count
-            total_passed += passed_count
-            total_failed += failed_count
-            print(f"❌ {failed_count} TESTS FAILED, {passed_count} PASSED in {duration:.2f} seconds")
+            # Pytest returns a bit mask where:
+            # 1 = test collection error
+            # 2 = test execution failed
+            # 4 = test execution interrupted
+            # 8 = internal pytest error
+            # So we need to check if bit 1 is set (value 2)
+            if result & 2:
+                failed_count = 1  # At least one test failed
+                passed_count = test_count - failed_count
+                total_passed += passed_count
+                total_failed += failed_count
+                print(f"❌ {failed_count} TESTS FAILED, {passed_count} PASSED in {duration:.2f} seconds")
+            else:
+                # Some other error occurred
+                total_failed += 1
+                print(f"❌ ERROR OCCURRED in {duration:.2f} seconds")
     
     # Print summary
     print("\n" + "=" * 80)

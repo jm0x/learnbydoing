@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 
 class StepBase(BaseModel):
@@ -12,8 +12,7 @@ class Step(StepBase):
     id: int
     problem_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class HintBase(BaseModel):
     order: int
@@ -26,8 +25,7 @@ class Hint(HintBase):
     id: int
     problem_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ProblemBase(BaseModel):
     title: str
@@ -47,8 +45,7 @@ class Problem(ProblemBase):
     hints: List[Hint] = []
     prerequisites: List["Problem"] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Avoid circular reference issues
-Problem.update_forward_refs()
+Problem.model_rebuild()
