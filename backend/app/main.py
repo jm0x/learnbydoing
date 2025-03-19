@@ -17,6 +17,10 @@ app.add_middleware(
 async def root():
     return {"message": "Welcome to Learn By Doing API"}
 
+@app.get("/api/v1/health")
+async def health_check():
+    return {"status": "ok", "message": "Service is running"}
+
 # Import and include routers
 from app.api import auth, problems
 app.include_router(auth.router, prefix=settings.API_V1_STR)

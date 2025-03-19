@@ -22,6 +22,15 @@ This document tracks the progress of the Learn By Doing project, including compl
   - [x] Protected routes properly secured
   - [x] Token validation functioning
 
+### 3. Testing Infrastructure (March 2025)
+- [x] Set up backend testing framework with pytest
+- [x] Create authentication API tests
+- [x] Implement service-level unit tests
+- [x] Add security utility tests
+- [x] Create frontend test structure with Jest
+- [x] Develop automated curl-based API testing script
+- [x] Implement unified test runner for the entire project
+
 ## Current Status
 
 The project has a working authentication system with the following features:
@@ -30,6 +39,9 @@ The project has a working authentication system with the following features:
 - JWT token-based authentication
 - Protected routes for authenticated users
 - SQLite database for development (PostgreSQL planned for production)
+- Comprehensive test suite for backend components
+- Automated API testing capabilities
+- Frontend test structure in place
 
 ## Next Steps
 
@@ -54,8 +66,8 @@ The project has a working authentication system with the following features:
 - [ ] Implement progress visualization
 
 ### 4. Testing and Quality Assurance
-- [ ] Write unit tests for backend services
-- [ ] Implement integration tests
+- [x] Write unit tests for backend services
+- [x] Implement integration tests
 - [ ] Set up CI/CD pipeline
 - [ ] Add API documentation
 - [ ] Perform security audit
@@ -97,9 +109,17 @@ The project has a working authentication system with the following features:
 - Registration: POST `/api/v1/auth/register`
 - Login: POST `/api/v1/auth/token`
 - User Info: GET `/api/v1/auth/me`
+- Health Check: GET `/api/v1/health`
 
 ### Testing
 To test the authentication system:
 1. Start the server: `source venv/bin/activate && uvicorn app.main:app --reload --port 8080`
 2. Access API documentation: http://localhost:8080/docs
 3. Test endpoints using Swagger UI or curl commands
+
+#### Automated Testing
+The project now includes comprehensive test infrastructure:
+- Backend unit tests: `cd backend && python tests/run_tests.py`
+- API integration tests: `backend/tests/scripts/test_auth_api.sh`
+- Frontend tests: `cd frontend && node src/tests/run_tests.js`
+- Complete test suite: `./run_tests.sh`
