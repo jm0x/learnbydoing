@@ -135,8 +135,8 @@ learn-by-doing/
 
 3. Access the application:
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
+   - Backend API: http://localhost:9090
+   - API Documentation: http://localhost:9090/docs
 
 ### Environment Variables
 
@@ -150,7 +150,7 @@ The application uses environment variables for configuration:
 - `SECRET_KEY`: JWT secret key (default: "supersecretkey")
 
 #### Frontend
-- `REACT_APP_API_URL`: Backend API URL (default: "http://localhost:8000")
+- `REACT_APP_API_URL`: Backend API URL (default: "http://localhost:9090")
 
 ### Local Development
 
@@ -160,7 +160,7 @@ cd backend
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 0.0.0.0 --port 9090
 ```
 
 #### Frontend

@@ -50,6 +50,12 @@ This document tracks the progress of the Learn By Doing project, including compl
 - [x] Create authentication UI (login/register)
 - [x] Design dashboard layout
 
+### 5. Configuration Updates (March 2025)
+- [x] Changed backend port from 8000 to 9090 due to port conflicts
+- [x] Updated all test scripts to use the new port
+- [x] Updated documentation to reflect port changes
+- [x] Ensured all API integration tests pass with new configuration
+
 ## Current Status
 
 The project has a working authentication system with the following features:
@@ -125,7 +131,7 @@ The project has a working authentication system with the following features:
 ## Notes for Development
 
 ### Development Environment
-- Backend running on port 8080
+- Backend running on port 9090
 - Frontend running on port 3000
 
 ### API Endpoints

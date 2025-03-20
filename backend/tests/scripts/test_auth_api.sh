@@ -10,7 +10,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Set the base URL
-BASE_URL="http://localhost:8080/api/v1/auth"
+BASE_URL="http://localhost:9090/api/v1/auth"
 
 # Test user details
 TEST_EMAIL="testuser_$(date +%s)@example.com"

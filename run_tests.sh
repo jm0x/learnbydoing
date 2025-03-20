@@ -26,7 +26,7 @@ echo -e "${YELLOW}=========================================${NC}\n"
 # Function to check if server is running
 check_server() {
     echo -e "${BLUE}Checking if backend server is running...${NC}"
-    if curl -s http://localhost:8080/api/v1/health > /dev/null; then
+    if curl -s http://localhost:9090/api/v1/health > /dev/null; then
         echo -e "${GREEN}Backend server is running.${NC}"
         return 0
     else
@@ -71,7 +71,7 @@ run_api_tests() {
     else
         echo -e "${YELLOW}Skipping API tests as backend server is not running.${NC}"
         echo -e "To run API tests, start the server with:"
-        echo -e "  cd backend && source venv/bin/activate && uvicorn app.main:app --reload --port 8080"
+        echo -e "  cd backend && source venv/bin/activate && uvicorn app.main:app --reload --port 9090"
         API_TEST_STATUS=2  # Skipped
     fi
 }
