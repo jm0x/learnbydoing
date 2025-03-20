@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Use environment variable or default value for API URL
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:9090';
 const AUTH_URL = `${API_URL}/api/v1/auth`;
 
 /**
@@ -26,6 +26,31 @@ const login = async (username, password) => {
     return response.data;
   } catch (error) {
     console.error('Login error:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * Get current user information
+ * @returns {Promise} Promise with user data
+ */
+const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    const response = await axios.get(`${AUTH_URL}/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Get user error:', error.response?.data || error.message);
     throw error;
   }
 };
@@ -61,7 +86,8 @@ const logout = () => {
 const authService = {
   login,
   register,
-  logout
+  logout,
+  getCurrentUser
 };
 
 export default authService;

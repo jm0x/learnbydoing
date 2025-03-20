@@ -188,6 +188,10 @@ The backend uses the following key dependencies (see `backend/requirements.txt` 
 - Hint system with progressive disclosure
 - Solution validation
 - User authentication and profile management
+  - Secure login and registration
+  - User profile page with account information
+  - User statistics display (completed and in-progress problems)
+  - Protected routes for authenticated users
 
 ## Data Model
 
@@ -199,18 +203,51 @@ The core data model includes:
 
 ## Development Progress
 
-For detailed information about the project's development status, completed tasks, and upcoming work, please see [Development Progress](docs/development_progress.md).
+### Completed
+- Backend API with FastAPI
+- Database setup with PostgreSQL
+- User authentication system
+- Frontend UI with React and Material-UI
+- Problem display and interaction
+- User profile and dashboard
+- Comprehensive test suite for frontend and backend
+
+### In Progress
+- Enhanced problem visualization
+- Mobile responsiveness improvements
+- Performance optimizations
+
+## Testing
+
+The project includes comprehensive testing for both frontend and backend:
+
+### Backend Tests
+```bash
+cd backend
+pytest
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+### Integration Tests
+```bash
+./run_tests.sh
+```
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- FastAPI for the backend framework
-- React and Material-UI for the frontend
-- PostgreSQL for the database
+This project is licensed under the MIT License - see the LICENSE file for details.

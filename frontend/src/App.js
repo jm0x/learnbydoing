@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import ProblemList from './pages/ProblemList';
 import ProblemDetail from './pages/ProblemDetail';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 // Components
 import Layout from './components/common/Layout';
@@ -37,6 +38,7 @@ function App() {
           <Route path="/problems" element={<ProblemList />} />
           <Route path="/problems/:id" element={<ProblemDetail />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Layout>
     </ThemeProvider>

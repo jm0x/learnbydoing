@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   AppBar, 
@@ -11,14 +11,19 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Avatar
+  Avatar,
+  Tooltip
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { logout } from '../../store/slices/authSlice';
 
 const Layout = ({ children }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(null);
   
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,9 +33,28 @@ const Layout = ({ children }) => {
     setAnchorEl(null);
   };
 
+  const handleUserMenu = (event) => {
+    setUserMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleUserMenuClose = () => {
+    setUserMenuAnchorEl(null);
+  };
+
   const handleNavigate = (path) => {
     navigate(path);
     handleClose();
+  };
+
+  const handleUserNavigate = (path) => {
+    navigate(path);
+    handleUserMenuClose();
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+    handleUserMenuClose();
   };
 
   return (
@@ -51,9 +75,28 @@ const Layout = ({ children }) => {
                 <Button color="inherit" component={Link} to="/dashboard">
                   Dashboard
                 </Button>
-                <Button color="inherit" onClick={() => navigate('/logout')}>
-                  Logout
-                </Button>
+                <Tooltip title="Account">
+                  <IconButton
+                    onClick={handleUserMenu}
+                    color="inherit"
+                    size="large"
+                    sx={{ ml: 1 }}
+                  >
+                    <AccountCircleIcon />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  anchorEl={userMenuAnchorEl}
+                  open={Boolean(userMenuAnchorEl)}
+                  onClose={handleUserMenuClose}
+                >
+                  <MenuItem onClick={() => handleUserNavigate('/profile')}>
+                    Profile
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    Logout
+                  </MenuItem>
+                </Menu>
               </>
             ) : (
               <>
@@ -86,7 +129,11 @@ const Layout = ({ children }) => {
               {isAuthenticated ? (
                 <>
                   <MenuItem onClick={() => handleNavigate('/dashboard')}>Dashboard</MenuItem>
-                  <MenuItem onClick={() => handleNavigate('/logout')}>Logout</MenuItem>
+                  <MenuItem onClick={() => handleNavigate('/profile')}>Profile</MenuItem>
+                  <MenuItem onClick={() => {
+                    dispatch(logout());
+                    handleNavigate('/login');
+                  }}>Logout</MenuItem>
                 </>
               ) : (
                 <>

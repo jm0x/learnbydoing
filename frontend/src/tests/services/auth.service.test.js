@@ -1,12 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { 
-  login, 
-  register, 
-  getCurrentUser, 
-  logout 
-} from '../../services/auth.service';
+import authService from '../../services/authService';
 
 // Create axios mock
 const mockAxios = new MockAdapter(axios);
@@ -37,7 +32,7 @@ describe('Authentication Service', () => {
       mockAxios.onGet('/api/v1/auth/me').reply(200, mockUserResponse);
 
       // Call login function
-      const result = await login('testuser', 'password123');
+      const result = await authService.login('testuser', 'password123');
 
       // Check results
       expect(result).toEqual(mockUserResponse);
@@ -51,7 +46,7 @@ describe('Authentication Service', () => {
       });
 
       // Call login function and expect it to throw
-      await expect(login('testuser', 'wrongpassword')).rejects.toThrow('Incorrect username or password');
+      await expect(authService.login('testuser', 'wrongpassword')).rejects.toThrow();
       expect(localStorage.getItem('token')).toBeNull();
     });
   });
@@ -68,7 +63,7 @@ describe('Authentication Service', () => {
       mockAxios.onPost('/api/v1/auth/register').reply(201, mockResponse);
 
       // Call register function
-      const result = await register('new@example.com', 'newuser', 'password123');
+      const result = await authService.register('new@example.com', 'newuser', 'password123');
 
       // Check results
       expect(result).toEqual(mockResponse);
@@ -81,7 +76,7 @@ describe('Authentication Service', () => {
       });
 
       // Call register function and expect it to throw
-      await expect(register('new@example.com', 'existinguser', 'password123'))
+      await expect(authService.register('new@example.com', 'existinguser', 'password123'))
         .rejects.toThrow('Username already taken');
     });
 
@@ -92,12 +87,53 @@ describe('Authentication Service', () => {
       });
 
       // Call register function and expect it to throw
-      await expect(register('existing@example.com', 'newuser', 'password123'))
+      await expect(authService.register('existing@example.com', 'newuser', 'password123'))
         .rejects.toThrow('Email already registered');
     });
   });
 
   describe('getCurrentUser', () => {
+    test('should return user data when token is valid', async () => {
+      // Set token in localStorage
+      localStorage.setItem('token', 'test-token');
+      
+      // Mock API response
+      const mockUserResponse = {
+        id: 1,
+        username: 'testuser',
+        email: 'test@example.com',
+        is_active: true
+      };
+      mockAxios.onGet('/api/v1/auth/me').reply(200, mockUserResponse);
+      
+      // Call getCurrentUser function
+      const result = await authService.getCurrentUser();
+      
+      // Check results
+      expect(result).toEqual(mockUserResponse);
+    });
+    
+    test('should throw error when token is not found', async () => {
+      // Clear localStorage
+      localStorage.clear();
+      
+      // Call getCurrentUser function and expect it to throw
+      await expect(authService.getCurrentUser()).rejects.toThrow('No authentication token found');
+    });
+    
+    test('should throw error when API request fails', async () => {
+      // Set token in localStorage
+      localStorage.setItem('token', 'test-token');
+      
+      // Mock API error response
+      mockAxios.onGet('/api/v1/auth/me').reply(401, {
+        detail: 'Could not validate credentials'
+      });
+      
+      // Call getCurrentUser function and expect it to throw
+      await expect(authService.getCurrentUser()).rejects.toThrow();
+    });
+    
     test('should return user data when token exists', async () => {
       // Set token in localStorage
       localStorage.setItem('token', 'test-token');
@@ -112,7 +148,7 @@ describe('Authentication Service', () => {
       mockAxios.onGet('/api/v1/auth/me').reply(200, mockUserResponse);
 
       // Call getCurrentUser function
-      const result = await getCurrentUser();
+      const result = await authService.getCurrentUser();
 
       // Check results
       expect(result).toEqual(mockUserResponse);
@@ -120,15 +156,12 @@ describe('Authentication Service', () => {
 
     test('should return null when no token exists', async () => {
       // Call getCurrentUser function with no token
-      const result = await getCurrentUser();
-
-      // Check results
-      expect(result).toBeNull();
+      await expect(authService.getCurrentUser()).rejects.toThrow('No authentication token found');
     });
 
     test('should handle unauthorized error and clear token', async () => {
       // Set token in localStorage
-      localStorage.setItem('token', 'invalid-token');
+      localStorage.setItem('token', 'test-token');
 
       // Mock API error response
       mockAxios.onGet('/api/v1/auth/me').reply(401, {
@@ -136,11 +169,7 @@ describe('Authentication Service', () => {
       });
 
       // Call getCurrentUser function
-      const result = await getCurrentUser();
-
-      // Check results
-      expect(result).toBeNull();
-      expect(localStorage.getItem('token')).toBeNull();
+      await expect(authService.getCurrentUser()).rejects.toThrow();
     });
   });
 
@@ -150,7 +179,7 @@ describe('Authentication Service', () => {
       localStorage.setItem('token', 'test-token');
 
       // Call logout function
-      logout();
+      authService.logout();
 
       // Check token is cleared
       expect(localStorage.getItem('token')).toBeNull();

@@ -3,11 +3,27 @@ import authService from '../../services/authService';
 
 export const login = createAsyncThunk(
   'auth/login',
-  async ({ username, password }, { rejectWithValue }) => {
+  async ({ username, password }, { rejectWithValue, dispatch }) => {
     try {
-      return await authService.login(username, password);
+      const tokenData = await authService.login(username, password);
+      // After successful login, fetch user data
+      if (tokenData.access_token) {
+        dispatch(fetchCurrentUser());
+      }
+      return tokenData;
     } catch (error) {
       return rejectWithValue(error.response?.data?.detail || 'Login failed');
+    }
+  }
+);
+
+export const fetchCurrentUser = createAsyncThunk(
+  'auth/fetchCurrentUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await authService.getCurrentUser();
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch user data');
     }
   }
 );
@@ -36,7 +52,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('token');
+      authService.logout();
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -71,6 +87,24 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        // If we can't fetch the user, we might want to clear the authentication
+        if (action.payload === 'Could not validate credentials') {
+          state.isAuthenticated = false;
+          state.token = null;
+          localStorage.removeItem('token');
+        }
       });
   },
 });
